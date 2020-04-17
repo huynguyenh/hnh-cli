@@ -1,4 +1,4 @@
-module github.com/huynguyenh/til.dev
+module github.com/huynguyenh/hnh-cli
 
 go 1.13
 
