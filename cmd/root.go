@@ -4,6 +4,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// some global var
+const (
+	ws      = "/Users/hnh/src"
+	blogDir = "github.com/huynguyenh/huyng.dev"
+)
+
 var (
 	rootCmd = &cobra.Command{
 		Use:   "hnh",
@@ -12,7 +18,7 @@ var (
 )
 
 func init() {
-	rootCmd.AddCommand(tilCmd)
+	rootCmd.AddCommand(configureTil())
 }
 
 // Execute executes the root command.
