@@ -54,5 +54,5 @@ title: %s
 kind: "til"
 date: %v
 tags: [%s]
----`, strings.Title(name), time.Now(), strings.Join(tags, ","))
+---`, strings.Title(name), time.Now().Format(time.RFC3339), strings.Join(tags, ","))
 }
