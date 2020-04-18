@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"path"
 	"strings"
 	"time"
@@ -29,15 +30,22 @@ func configureTil() *cobra.Command {
 
 func tilcmd(cmd *cobra.Command, args []string) {
 	// first create a file in <my_src>/<name>.md
-	path := path.Join(ws, blogDir, "content/til", name+".md")
+	p := path.Join(ws, blogDir, "content/til", name+".md")
 
 	// bootstrap with some meta info
-	f, _ := os.Create(path)
+	f, _ := os.Create(p)
 	f.WriteString(tilTpl())
 
 	// open vim to start edit
+	vim := exec.Command("vim", p)
+	vim.Stdin = os.Stdin
+	vim.Stdout = os.Stdout
+	vim.Run()
 
-	// after save, go push to git, with after hook
+	// run git push script
+	exe := exec.Command("sh", path.Dir(p)+"/til.sh", "add "+name+".md")
+	exe.Stdout = os.Stdout
+	exe.Run()
 }
 
 func tilTpl() string {
@@ -46,6 +54,5 @@ title: %s
 kind: "til"
 date: %v
 tags: [%s]
----
-	`, strings.Title(name), time.Now(), strings.Join(tags, ","))
+---`, strings.Title(name), time.Now(), strings.Join(tags, ","))
 }
